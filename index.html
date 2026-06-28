@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maaf ya Sayang... ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { 
+            background-color: #0d1321; 
+            color: #f4f5f6; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+            text-align: center;
+            position: relative;
+        }
+        
+        /* Tirai Depan */
+        .tirai { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(to bottom, #1d2d44, #0d1321); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 10; 
+            transition: transform 1.5s ease-in-out; 
+            padding: 20px; 
+        }
+        .tirai.buka { transform: translateY(-100%); pointer-events: none; }
+        .btn-buka { 
+            padding: 14px 35px; 
+            background: #f43f5e; 
+            border: none; 
+            border-radius: 25px; 
+            color: white; 
+            font-weight: 500; 
+            font-size: 15px; 
+            cursor: pointer; 
+            margin-top: 25px; 
+            box-shadow: 0 5px 15px rgba(244,63,94,0.4); 
+            transition: 0.3s; 
+        }
+        
+        /* Konten Utama */
+        .konten { 
+            padding: 35px 25px; 
+            width: 100%; 
+            max-width: 420px; 
+            display: none; 
+            z-index: 2; 
+            background: rgba(29, 45, 68, 0.4); 
+            border-radius: 20px; 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+            position: relative;
+        }
+        .konten.muncul { display: block; animation: fadeIn 1.8s ease; }
+        .love-title { font-size: 11px; color: #f43f5e; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+        .love-subtitle { font-size: 19px; font-weight: 500; color: #ffffff; margin-bottom: 25px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        
+        /* Teks Cerita */
+        .teks-cerita { 
+            font-size: 14.5px; 
+            line-height: 1.8; 
+            color: rgba(255,255,255,0.9); 
+            min-height: 160px; 
+            margin-bottom: 30px; 
+            padding: 0 5px; 
+            text-align: justify; 
+        }
+        .btn-next { 
+            padding: 12px 35px; 
+            background: #ffffff; 
+            color: #0d1321; 
+            border: none; 
+            border-radius: 25px; 
+            font-weight: bold; 
+            font-size: 13px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+        }
+        
+        /* Halaman Pertanyaan Interaktif */
+        .halaman-pertanyaan {
+            display: none;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 420px;
+            z-index: 2;
+            background: rgba(29, 45, 68, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .container-tombol {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 35px;
+            min-height: 180px;
+            position: relative;
+        }
+        
+        /* Tombol Iya */
+        .btn-iya {
+            padding: 12px 30px;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Tombol Engga */
+        .btn-engga {
+            padding: 12px 30px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Halaman Sukses */
+        .halaman-sukses {
+            display: none;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 420px;
+            z-index: 2;
+            background: rgba(29, 45, 68, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .kartu-sukses {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-wa {
+            padding: 12px 30px;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(34, 197, 94, 0.4);
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Efek Hati */
+        .hati-jatuh {
+            position: absolute;
+            color: #f43f5e;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 1;
+            animation: jatuh linear forwards;
+        }
+
+        @keyframes jatuh {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO PEMUTAR MUSIK -->
+    <audio id="lagu" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Halaman Tirai Depan -->
+    <div class="tirai" id="halamanTirai">
+        <p style="font-size: 40px; margin-bottom: 15px;">😔</p>
+        <p style="font-size: 11px; letter-spacing: 3px; opacity: 0.6; text-transform: uppercase; color: #f43f5e;">Surat Tulus</p>
+        <h1 style="color: #ffffff; font-size: 22px; font-weight: 400; margin: 5px 0 10px 0; padding: 0 20px;">Sebentar Ade Vika, ada yang mau aku sampaikan...</h1>
+        <button class="btn-buka" onclick="bukaTirai()">Buka Pesan Ini</button>
+    </div>
+
+    <!-- Konten Cerita Minta Maaf -->
+    <div class="konten" id="kontenUtama">
+        <p class="love-title" id="babTitle">BAGIAN 1 / 4</p>
+        <h2 class="love-subtitle" id="subTitle">Aku Tahu Aku Salah</h2>
+        
+        <p class="teks-cerita" id="teksGanti">Hai Ade Vika sayang... Maaf ya kalau belakangan ini aku bikin hari kamu jadi berantakan. Aku bener-bener menyesal banget sama omongan aku kemarin yang sudah membuat hati Ade sakit. Engga ada niatan sedikit pun dari aku untuk sengaja menyakiti perasaan kamu, sayang. Aku sayang banget sama Ade...</p>
+        
+        <button class="btn-next" onclick="nextBabak()" id="btnAksi">Baca Kelanjutannya</button>
+    </div>
+
+    <!-- Halaman Pertanyaan Interaktif (Iya / Engga) -->
+    <div class="halaman-pertanyaan" id="halamanTanya">
+        <div style="font-size: 45px; margin-bottom: 15px;">🥺🙏</div>
+        <p class="love-title">KEPUTUSAN ADE</p>
+        <h2 class="love-subtitle" style="font-size: 20px;">Ade Vika sayang, mau kan maafin aku? ❤️</h2>
+        <p style="font-size: 13.5px; opacity: 0.8; padding: 0 10px; line-height: 1.6;">Aku janji bakal jaga omongan aku lebih baik lagi ke depannya demi kamu, sayang. Aku engga mau bikin Ade sedih lagi karena kecerobohanku.</p>
+        
+        <div class="container-tombol">
+            <button class="btn-iya" id="tombolIya" onclick="terimaMaaf()">Iya, dimaafin</button>
+            <button class="btn-engga" id="tombolEngga" onmouseover="tombolLari()" onclick="tombolLari()" ontouchstart="tombolLari(event)">Engga!</button>
+        </div>
+    </div>
+
+    <!-- Halaman Sukses Setelah Dimaafkan -->
+    <div class="halaman-sukses" id="halamanSelesai">
+        <div class="kartu-sukses">
+            <div style="font-size: 55px; margin-bottom: 15px;">💖🧸🎉</div>
+            <p class="love-title" style="color: #22c55e;">YEEEYY DIMAAFIN!</p>
+            <h2 style="font-size: 20px; margin: 5px 0 15px 0; font-weight: 500;">Makasih Banyak, Sayang!</h2>
+            <p style="font-size: 13.5px; opacity: 0.8; line-height: 1.7; text-align: justify;">
+                Makasih banyak ya, Ade Vika sayang, karena kamu masih mau berbaik hati memberikan kesempatan lagi buat aku. Senang banget rasanya! Aku janji engga bakal menyia-nyiakan kesempatan ini dan akan terus belajar buat lebih sabar serta dewasa demi kebahagiaan kamu, sayang. I love you so much, Ade! ❤️
+            </p>
+            
+            <!-- Ubah nomor 628123456789 di bawah ini menjadi nomor WA kamu sendiri -->
+            <a href="https://wa.me/628123456789?text=Iya%20udah%20aku%20maafkan%20ya%20sayang,%20jangan%20diulangi%20lagi!" class="btn-wa">Kirim Kabar ke WA Aku</a>
+        </div>
+    </div>
+
+    <script>
+        let babakSaatIni = 1;
+        const lagu = document.getElementById('lagu');
+        let skalaIya = 1;
+
+        const dataKonten = {
+            2: {
+                bab: "BAGIAN 2 / 4",
+                sub: "Penyesalan Terbesarku",
+                teks: "Aku sadar, kadang ucapan aku keluar begitu saja tanpa memikirkan posisi kamu yang mendengarkannya, sayang. Harusnya aku bisa lebih mengerti dan menjaga perasaan Ade Vika, bukan malah menuruti emosi atau kecerobohanku sendiri. Melihat Ade diam dan terluka karena kata-kataku, rasanya benar-benar menyiksa diriku sendiri, sayang. Aku menyesal sedalam-dalamnya.",
+                btn: "Lanjut"
+            },
+            3: {
+                bab: "BAGIAN 3 / 4",
+                sub: "Kangen Senyum Manis Ade",
+                teks: "Aku rindu banget sama interaksi kita yang biasa, rindu mendengar cerita kamu, rindu lihat Ade tertawa tanpa ada beban dari kesalahan yang aku perbuat. Aku benar-benar minta maaf ya, Ade sayang. Tolong kasih aku kesempatan untuk memperbaiki ini dan membuat kamu tersenyum bahagia lagi bersama aku.",
+                btn: "Lanjut"
+            },
+            4: {
+                bab: "BAGIAN 4 / 4",
+                sub: "Ade yang Paling Berharga",
+                teks: "Di mata aku, kamu tetap Ade Vika yang paling cantik dan paling berharga di hidupku. Aku sangat bersyukur memiliki kamu, sayang, dan aku sangat membenci fakta bahwa diriku sendirilah yang sudah membuat orang seberharga kamu merasa sedih. Menyadari ucapan cerobohku telah melukaimu adalah hal yang paling membuatku merasa bersalah saat ini. Sekali lagi, maafkan aku ya, sayang... Aku janji akan berubah lebih dewasa demi Ade.",
+                btn: "Minta Maaf Langsung"
+            }
+        };
+
+        function bukaTirai() {
+            lagu.play().catch(e => console.log("Musik diputar."));
+            document.getElementById('halamanTirai').classList.add('buka');
+            setTimeout(() => {
+                document.getElementById('kontenUtama').classList.add('muncul');
+            }, 1000);
+        }
+
+        function nextBabak() {
+            babakSaatIni++;
+            if (dataKonten[babakSaatIni]) {
+                document.getElementById('babTitle').innerText = dataKonten[babakSaatIni].bab;
+                document.getElementById('subTitle').innerText = dataKonten[babakSaatIni].sub;
+                document.getElementById('teksGanti').innerText = dataKonten[babakSaatIni].teks;
+                document.getElementById('btnAksi').innerText = dataKonten[babakSaatIni].btn;
+            } else {
+                document.getElementById('kontenUtama').style.display = 'none';
+                document.getElementById('halamanTanya').style.display = 'block';
+            }
+        }
+
+        function tombolLari(event) {
+            if (event) event.preventDefault(); 
+            
+            const btnEngga = document.getElementById('tombolEngga');
+            const btnIya = document.getElementById('tombolIya');
+            
+            skalaIya += 0.55; // Tombol "Iya" membesar 55% setiap tombol engga tersentuh
+            btnIya.style.transform = `scale(${skalaIya})`;
+            
+            const areaTombol = document.querySelector('.container-tombol');
+            const areaWidth = areaTombol.clientWidth - 100;
+            const areaHeight = areaTombol.clientHeight - 50;
+
+            const xAcak = Math.floor(Math.random() * areaWidth) - (areaWidth / 2);
+            const yAcak = Math.floor(Math.random() * areaHeight) - (areaHeight / 2);
+
+            btnEngga.style.position = 'absolute';
+            btnEngga.style.left = `calc(50% - 50px + ${xAcak}px)`;
+            btnEngga.style.top = `calc(50% - 25px + ${yAcak}px)`;
+        }
+
+        function terimaMaaf() {
+            document.getElementById('halamanTanya').style.display = 'none';
+            document.getElementById('halamanSelesai').style.display = 'block';
+            setInterval(buatHatiJatuh, 150);
+        }
+
+        function buatHatiJatuh() {
+            const hati = document.createElement('div');
+            hati.classList.add('hati-jatuh');
+            const emoticonHati = ['❤️', '💖', '💝', '💕', '🌸', '✨'];
+            hati.innerText = emoticonHati[Math.floor(Math.random() * emoticonHati.length)];
+            hati.style.left = Math.random() * 100 + "vw";
+            hati.style.animationDuration = Math.random() * 2 + 3 + "s";
+            hati.style.fontSize = Math.random() * 20 + 20 + "px";
+            document.body.appendChild(hati);
+            setTimeout(() => { hati.remove(); }, 5000);
+        }
+    </script>
+</body>
+  </html>
